@@ -1,39 +1,39 @@
-import { useRecoilState } from "recoil";
-import { modalState, postIdState } from "../atom/modalAtom";
-import { useRouter } from "next/router";
-import Modal from "react-modal";
+import { useRecoilState } from 'recoil';
+import { modalState, postIdState } from '../atom/modalAtom';
+import { useRouter } from 'next/router';
+import Modal from 'react-modal';
 import {
   EmojiHappyIcon,
   PhotographIcon,
   XIcon,
-} from "@heroicons/react/outline";
-import { useEffect, useState } from "react";
-import { db } from "../firebase";
+} from '@heroicons/react/outline';
+import { useEffect, useState } from 'react';
+import { db } from '../firebase';
 import {
   addDoc,
   collection,
   doc,
   onSnapshot,
   serverTimestamp,
-} from "firebase/firestore";
-import Moment from "react-moment";
-import { userState } from "../atom/userAtom";
+} from 'firebase/firestore';
+import Moment from 'react-moment';
+import { userState } from '../atom/userAtom';
 export default function CommentModal() {
   const [open, setOpen] = useRecoilState(modalState);
   const [postId] = useRecoilState(postIdState);
   const [currentUser] = useRecoilState(userState);
   const [post, setPost] = useState({});
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState('');
   const router = useRouter();
 
   useEffect(() => {
-    onSnapshot(doc(db, "posts", postId), (snapshot) => {
+    onSnapshot(doc(db, 'posts', postId), (snapshot) => {
       setPost(snapshot);
     });
   }, [postId, db]);
 
   async function sendComment() {
-    await addDoc(collection(db, "posts", postId, "comments"), {
+    await addDoc(collection(db, 'posts', postId, 'comments'), {
       comment: input,
       name: currentUser.name,
       username: currentUser.username,
@@ -43,7 +43,7 @@ export default function CommentModal() {
     });
 
     setOpen(false);
-    setInput("");
+    setInput('');
     router.push(`/posts/${postId}`);
   }
 
@@ -75,7 +75,7 @@ export default function CommentModal() {
                 {post?.data()?.name}
               </h4>
               <span className="text-sm sm:text-[15px]">
-                @{post?.data()?.username} -{" "}
+                @{post?.data()?.username} -{' '}
               </span>
               <span className="text-sm sm:text-[15px] hover:underline">
                 <Moment fromNow>{post?.data()?.timestamp?.toDate()}</Moment>
@@ -104,17 +104,8 @@ export default function CommentModal() {
 
                 <div className="flex items-center justify-between pt-2.5">
                   <div className="flex">
-                    <div
-                      className=""
-                      // onClick={() => filePickerRef.current.click()}
-                    >
+                    <div className="">
                       <PhotographIcon className="h-10 w-10 hoverEffect p-2 text-sky-500 hover:bg-sky-100" />
-                      {/* <input
-                        type="file"
-                        hidden
-                        ref={filePickerRef}
-                        onChange={addImageToPost}
-                      /> */}
                     </div>
                     <EmojiHappyIcon className="h-10 w-10 hoverEffect p-2 text-sky-500 hover:bg-sky-100" />
                   </div>

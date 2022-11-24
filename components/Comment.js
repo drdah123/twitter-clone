@@ -5,23 +5,23 @@ import {
   HeartIcon,
   ShareIcon,
   TrashIcon,
-} from "@heroicons/react/outline";
-import { HeartIcon as HeartIconFilled } from "@heroicons/react/solid";
-import Moment from "react-moment";
+} from '@heroicons/react/outline';
+import { HeartIcon as HeartIconFilled } from '@heroicons/react/solid';
+import Moment from 'react-moment';
 import {
   collection,
   deleteDoc,
   doc,
   onSnapshot,
   setDoc,
-} from "firebase/firestore";
-import { db, storage } from "../firebase";
-import { useState, useEffect } from "react";
-import { deleteObject, ref } from "firebase/storage";
-import { useRecoilState } from "recoil";
-import { modalState, postIdState } from "../atom/modalAtom";
-import { useRouter } from "next/router";
-import { userState } from "../atom/userAtom";
+} from 'firebase/firestore';
+import { db, storage } from '../firebase';
+import { useState, useEffect } from 'react';
+import { deleteObject, ref } from 'firebase/storage';
+import { useRecoilState } from 'recoil';
+import { modalState, postIdState } from '../atom/modalAtom';
+import { useRouter } from 'next/router';
+import { userState } from '../atom/userAtom';
 
 export default function Comment({ comment, commentId, originalPostId }) {
   const [likes, setLikes] = useState([]);
@@ -33,7 +33,7 @@ export default function Comment({ comment, commentId, originalPostId }) {
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
-      collection(db, "posts", originalPostId, "comments", commentId, "likes"),
+      collection(db, 'posts', originalPostId, 'comments', commentId, 'likes'),
       (snapshot) => setLikes(snapshot.docs)
     );
   }, [db, originalPostId, commentId]);
@@ -48,11 +48,11 @@ export default function Comment({ comment, commentId, originalPostId }) {
         await deleteDoc(
           doc(
             db,
-            "posts",
+            'posts',
             originalPostId,
-            "comments",
+            'comments',
             commentId,
-            "likes",
+            'likes',
             currentUser?.uid
           )
         );
@@ -60,11 +60,11 @@ export default function Comment({ comment, commentId, originalPostId }) {
         await setDoc(
           doc(
             db,
-            "posts",
+            'posts',
             originalPostId,
-            "comments",
+            'comments',
             commentId,
-            "likes",
+            'likes',
             currentUser?.uid
           ),
           {
@@ -73,14 +73,13 @@ export default function Comment({ comment, commentId, originalPostId }) {
         );
       }
     } else {
-      // signIn();
-      router.push("/auth/signin");
+      router.push('/auth/signin');
     }
   }
 
   async function deleteComment() {
-    if (window.confirm("Are you sure you want to delete this comment?")) {
-      deleteDoc(doc(db, "posts", originalPostId, "comments", commentId));
+    if (window.confirm('Are you sure you want to delete this comment?')) {
+      deleteDoc(doc(db, 'posts', originalPostId, 'comments', commentId));
     }
   }
 
@@ -103,7 +102,7 @@ export default function Comment({ comment, commentId, originalPostId }) {
               {comment?.name}
             </h4>
             <span className="text-sm sm:text-[15px]">
-              @{comment?.username} -{" "}
+              @{comment?.username} -{' '}
             </span>
             <span className="text-sm sm:text-[15px] hover:underline">
               <Moment fromNow>{comment?.timestamp?.toDate()}</Moment>
@@ -128,7 +127,7 @@ export default function Comment({ comment, commentId, originalPostId }) {
               onClick={() => {
                 if (!currentUser) {
                   // signIn();
-                  router.push("/auth/signin");
+                  router.push('/auth/signin');
                 } else {
                   setPostId(originalPostId);
                   setOpen(!open);
@@ -157,9 +156,9 @@ export default function Comment({ comment, commentId, originalPostId }) {
             )}
             {likes.length > 0 && (
               <span
-                className={`${hasLiked && "text-red-600"} text-sm select-none`}
+                className={`${hasLiked && 'text-red-600'} text-sm select-none`}
               >
-                {" "}
+                {' '}
                 {likes.length}
               </span>
             )}
