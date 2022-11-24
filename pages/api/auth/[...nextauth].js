@@ -5,9 +5,8 @@ export default NextAuth({
   // Configure one or more authentication providers
   providers: [
     GoogleProvider({
-      clientId:
-        '323286738680-bp23c7m1ge48ds8k2rue3bnqgseqnuqb.apps.googleusercontent.com',
-      clientSecret: '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',
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
     // ...add more providers here
   ],
@@ -16,8 +15,7 @@ export default NextAuth({
     signIn: '/auth/signin',
   },
 
-  secret:
-    '323286738680-bp23c7m1ge48ds8k2rue3bnqgseqnuqb.apps.googleusercontent.com',
+  secret: process.env.GOOGLE_CLIENT_ID,
 
   callbacks: {
     async session({ session, token }) {
